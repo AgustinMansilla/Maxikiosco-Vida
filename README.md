@@ -1,52 +1,42 @@
 # 🛒 Maxikiosco Vi-Da — Sistema de ventas e inventario
 
-Aplicación comercial para gestionar ventas, productos, stock, caja, cuentas corrientes y reportes desde computadoras y celulares.
+Sistema comercial para punto de venta, productos, caja, cuentas corrientes, proveedores y administración desde PC y celular.
 
-**Desarrollo:** Agustín Mansilla Emanuel
+**Desarrollado por Agustín Mansilla Emanuel**
 
----
+## Funcionalidades
 
-## 📌 Descripción
+- **Caja y ventas:** lectura de códigos de barras, carrito, venta por unidades y por peso, medios de pago y cálculo de vuelto.
+- **Productos:** catálogo, categorías, importación, precios, stock y gestión de artículos por kilogramos o gramos.
+- **Cierre de caja:** rendición por turnos, avisos de cierre y seguimiento de movimientos.
+- **Reportes:** ventas por período, cobros, operaciones y medios de pago.
+- **Cuenta corriente y proveedores:** administración de movimientos y saldos.
+- **Celular:** consulta de ventas y administración de precios, productos y existencias.
+- **Sincronización:** intercambio de información entre equipos.
 
-Maxikiosco Vi-Da reúne las operaciones de un comercio en un sistema pensado para la atención diaria. El punto de venta combina un lector de códigos de barras, búsquedas por nombre, productos por peso y distintos medios de cobro con un catálogo administrable y herramientas de control de caja.
+## Tecnologías
 
-## ⚙️ Funcionalidades
-
-- **Ventas:** búsqueda por código o nombre, carrito, cantidades, descuentos de stock y cierre de operaciones.
-- **Productos por peso:** pan, bizcochos, masitas y artículos con cálculo por kilogramos o gramos.
-- **Catálogo:** altas, edición, precios, categorías, stock, importación y exportación.
-- **Medios de pago:** efectivo, transferencia, tarjeta, pagos combinados y cuenta corriente.
-- **Caja y turnos:** apertura, cierre, rendición de efectivo, movimientos y avisos de control.
-- **Reportes:** ventas por período, formas de pago, cuentas y comprobantes.
-- **Clientes y proveedores:** gestión de cuentas y movimientos.
-- **Administración móvil:** consulta de ventas, productos, precios, existencias y caja.
-- **Sincronización:** funcionamiento entre computadoras y dispositivos móviles.
-
-## 🛠️ Tecnologías
-
-| Componente | Tecnología |
-| :--- | :--- |
-| Lógica del sistema | Python |
-| Interfaz | HTML, CSS, JavaScript |
+| Área | Tecnologías |
+| --- | --- |
+| Lógica y servidor local | Python |
+| Frontend | HTML, CSS, JavaScript |
 | Base de datos | SQLite |
-| Plataforma principal | Windows |
-| Acceso móvil | Interfaz web adaptable |
+| Plataforma | Windows e interfaz móvil adaptable |
 
-## 💻 Interfaz del sistema
+## Pantallas originales
 
-La [vista interactiva](demo/index.html) reúne las pantallas de ventas, catálogo, reportes, caja y gestión móvil.
+La [galería del sistema](demo/index.html) muestra cuatro capturas de la versión **1.5.2**: venta, productos, cierre de caja con reportes y administración móvil.
 
-Se puede recorrer el punto de venta, agregar productos, ajustar cantidades por gramos, elegir un medio de pago, consultar inventario, editar precios y stock, registrar ventas y visualizar reportes.
+Se conservaron el diseño, la identidad amarilla Vi-Da, los botones y la distribución de las pantallas originales. También están disponibles los [estilos CSS del desarrollo](demo/estilos-originales.css).
 
-## 📁 Estructura
+## Estructura
 
 ```text
 Maxikiosco-Vida/
 ├── demo/
-│   └── index.html
+│   ├── index.html
+│   └── estilos-originales.css
 └── README.md
 ```
-
----
 
 **Agustín Mansilla Emanuel** · Técnico Universitario en Programación
