@@ -1,6 +1,6 @@
-# 🛒 Maxikiosco Vida — Sistema de ventas e inventario
+# 🛒 Maxikiosco Vi-Da — Sistema de ventas e inventario
 
-Sistema de gestión comercial para punto de venta, control de stock, caja y administración desde computadoras y dispositivos móviles.
+Aplicación comercial para gestionar ventas, productos, stock, caja, cuentas corrientes y reportes desde computadoras y celulares.
 
 **Desarrollo:** Agustín Mansilla Emanuel
 
@@ -8,37 +8,37 @@ Sistema de gestión comercial para punto de venta, control de stock, caja y admi
 
 ## 📌 Descripción
 
-Maxikiosco Vida centraliza las operaciones diarias de un comercio en una interfaz rápida y adaptable. Permite registrar ventas, buscar productos, gestionar precios y existencias, controlar medios de pago y consultar movimientos de caja.
+Maxikiosco Vi-Da reúne las operaciones de un comercio en un sistema pensado para la atención diaria. El punto de venta combina un lector de códigos de barras, búsquedas por nombre, productos por peso y distintos medios de cobro con un catálogo administrable y herramientas de control de caja.
 
 ## ⚙️ Funcionalidades
 
-- **Punto de venta:** lectura de códigos de barras, búsqueda de artículos y carrito de compras.
-- **Inventario:** altas, edición de precios, categorías y actualización de stock.
-- **Productos por peso:** ventas por kilo o gramos, además de artículos por unidad.
-- **Medios de pago:** efectivo, tarjeta, transferencia y pagos combinados.
-- **Caja:** apertura, cierres por turno y movimientos de ingresos y egresos.
-- **Reportes:** seguimiento de ventas y totales por períodos.
-- **Cuentas corrientes:** registro de operaciones con clientes y proveedores.
-- **Administración móvil:** consulta de información comercial y actualización de productos.
-- **Trabajo entre equipos:** funcionamiento en red y sincronización de operaciones.
+- **Ventas:** búsqueda por código o nombre, carrito, cantidades, descuentos de stock y cierre de operaciones.
+- **Productos por peso:** pan, bizcochos, masitas y artículos con cálculo por kilogramos o gramos.
+- **Catálogo:** altas, edición, precios, categorías, stock, importación y exportación.
+- **Medios de pago:** efectivo, transferencia, tarjeta, pagos combinados y cuenta corriente.
+- **Caja y turnos:** apertura, cierre, rendición de efectivo, movimientos y avisos de control.
+- **Reportes:** ventas por período, formas de pago, cuentas y comprobantes.
+- **Clientes y proveedores:** gestión de cuentas y movimientos.
+- **Administración móvil:** consulta de ventas, productos, precios, existencias y caja.
+- **Sincronización:** funcionamiento entre computadoras y dispositivos móviles.
 
 ## 🛠️ Tecnologías
 
-| Componente | Tecnologías |
+| Componente | Tecnología |
 | :--- | :--- |
-| Lógica y servidor local | Python |
+| Lógica del sistema | Python |
 | Interfaz | HTML, CSS, JavaScript |
 | Base de datos | SQLite |
-| Aplicación de escritorio | Windows |
-| Acceso desde dispositivos | Interfaz web adaptable |
+| Plataforma principal | Windows |
+| Acceso móvil | Interfaz web adaptable |
 
-## 💻 Vista interactiva
+## 💻 Interfaz del sistema
 
-La carpeta [`demo/`](demo/) contiene una interfaz de muestra de punto de venta y gestión de productos, con búsqueda, categorías, carrito, cobro y consulta de stock.
+La [vista interactiva](demo/index.html) reúne las pantallas de ventas, catálogo, reportes, caja y gestión móvil.
 
-Abrí [`demo/index.html`](demo/index.html) en un navegador para probarla.
+Se puede recorrer el punto de venta, agregar productos, ajustar cantidades por gramos, elegir un medio de pago, consultar inventario, editar precios y stock, registrar ventas y visualizar reportes.
 
-## 📁 Organización
+## 📁 Estructura
 
 ```text
 Maxikiosco-Vida/
