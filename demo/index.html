@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142831">
+  <title>Maxikiosco Vida | Gestión comercial</title>
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#1c3038;background:#f4f7f8;font-size:14px}
+    *{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
+    .shell{display:grid;grid-template-columns:235px minmax(0,1fr);min-height:100vh}
+    aside{background:#152932;color:#d5e4e8;padding:28px 17px;display:flex;flex-direction:column;gap:32px}
+    .brand{display:flex;gap:12px;align-items:center;padding:4px 10px}.brand-icon{background:#f3c94b;color:#1f3138;border-radius:12px;padding:10px;font-weight:900;font-size:24px}
+    .brand strong{display:block;font-size:20px;letter-spacing:-.05em;color:white}.brand small{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#a3bec5}
+    .menu{display:grid;gap:7px}.menu button{border:0;border-radius:9px;padding:14px 15px;text-align:left;background:transparent;color:#c6d6da;font-weight:700}
+    .menu button.active{background:#f3c94b;color:#24353b}.menu button:hover:not(.active){background:#203c46}
+    .aside-bottom{margin-top:auto;color:#9fb5ba;font-size:12px;padding:10px;line-height:1.6}
+    main{width:100%;max-width:1580px;margin:0 auto;padding:30px clamp(18px,4vw,50px) 55px}
+    .heading{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:26px}
+    .eyebrow{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:#81979e}
+    h1{font-size:clamp(28px,3.7vw,38px);letter-spacing:-.045em;margin:6px 0}
+    .online{background:#e5f5e9;border-radius:99px;color:#2c7846;padding:9px 15px;font-size:12px;font-weight:750}
+    .summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:23px}
+    .metric,.panel{border:1px solid #dfe8eb;border-radius:15px;background:#fff;box-shadow:0 5px 22px #15303b08}
+    .metric{padding:20px 22px}.metric span{font-size:12px;font-weight:700;color:#7e969e}.metric strong{display:block;font-size:27px;letter-spacing:-.04em;margin-top:8px}
+    .workspace{display:grid;grid-template-columns:minmax(0,1fr) 335px;align-items:start;gap:20px}
+    .panel{padding:24px}.panel h2{font-size:20px;letter-spacing:-.03em;margin:0}.sub{font-size:12px;color:#879ba3;margin:8px 0 18px}
+    .search{display:block;width:100%;background:#f8fafb;border:1px solid #dae5e9;border-radius:9px;outline:0;padding:14px;color:#1c3038}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 20px}
+    .filters button{border:1px solid #dee7e9;border-radius:8px;padding:9px 12px;background:white;color:#637b85;font-weight:650;font-size:12px}
+    .filters button.selected{background:#183842;color:white;border-color:#183842}
+    .products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .product{border:1px solid #e4ecee;border-radius:11px;background:#fff;min-height:147px;padding:15px;text-align:left;display:flex;flex-direction:column;gap:7px;transition:transform .15s,border-color .15s}
+    .product:hover{transform:translateY(-2px);border-color:#efc65b}.product .emoji{font-size:25px}.product strong{font-size:13px;line-height:1.35}
+    .product .price{font-size:16px;font-weight:850;color:#1d4149;margin-top:auto}.product small{color:#87a0a5;font-size:11px}
+    .cart{display:grid;gap:12px}.cart-item{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #edf1f2;padding-bottom:12px}
+    .cart-item strong{display:block;font-size:13px}.cart-item small{color:#80939b}
+    .qty{display:flex;gap:8px;align-items:center}.qty button{border:1px solid #dce5e8;background:#f9fafb;border-radius:6px;width:27px;height:27px}
+    .cart-empty{color:#8097a0;text-align:center;background:#f7fafb;border-radius:10px;padding:28px 12px}
+    .total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e7eef0;padding-top:17px;margin-top:14px;font-weight:700}
+    .total strong{font-size:24px}.select{width:100%;background:#fff;padding:12px;border:1px solid #dce6e9;border-radius:9px;margin:15px 0}
+    .primary{width:100%;padding:14px;background:#efc64a;border:0;border-radius:10px;color:#21333a;font-weight:850}
+    .primary:hover{background:#f7d36a}.muted{color:#81959c;font-size:12px}
+    .table-wrap{overflow:auto}.data-table{width:100%;border-collapse:collapse;min-width:460px}.data-table th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7f959c;border-bottom:1px solid #e7edef;padding:12px}
+    .data-table td{border-bottom:1px solid #edf1f2;padding:13px 12px}.right{text-align:right}.pill{padding:6px 10px;border-radius:99px;font-size:11px;font-weight:800;background:#e8f4ec;color:#347750}
+    .pill.low{background:#fff0e1;color:#ae6d2b}
+    .empty{color:#80939b;text-align:center;padding:38px 10px}
+    .hidden{display:none!important}
+    #toast{position:fixed;bottom:26px;right:26px;max-width:350px;background:#193840;color:#fff;padding:14px 18px;border-radius:10px;box-shadow:0 12px 36px #101f2940;opacity:0;transform:translateY(12px);transition:.2s;pointer-events:none}
+    #toast.show{opacity:1;transform:translateY(0)}
+    footer{font-size:11px;color:#81969e;margin-top:32px}
+    @media(max-width:1120px){.workspace{grid-template-columns:minmax(0,1fr)}.products{grid-template-columns:repeat(4,1fr)}}
+    @media(max-width:830px){.shell{grid-template-columns:1fr}aside{padding:14px;gap:12px}.brand{justify-content:center}.menu{display:flex;overflow:auto}.menu button{white-space:nowrap}.aside-bottom{display:none}main{padding:23px 15px}.products{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:560px){.summary{grid-template-columns:1fr}.products{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:17px}.heading{align-items:stretch}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand"><span class="brand-icon">V</span><div><strong>VI-DA</strong><small>Gestión comercial</small></div></div>
+      <div class="menu" aria-label="Secciones">
+        <button class="active" data-view="ventas">▦ &nbsp; Punto de venta</button>
+        <button data-view="inventario">▤ &nbsp; Productos y stock</button>
+        <button data-view="caja">▤ &nbsp; Movimientos de caja</button>
+      </div>
+      <div class="aside-bottom">Maxikiosco Vida<br>Administración comercial</div>
+    </aside>
+    <main>
+      <div class="heading"><div><div class="eyebrow">Panel de administración</div><h1 id="pageTitle">Punto de venta</h1></div><span class="online">● Sistema activo</span></div>
+      <div class="summary">
+        <div class="metric"><span>Ventas registradas</span><strong id="salesCount">0</strong></div>
+        <div class="metric"><span>Total de ventas</span><strong id="salesTotal">$ 0</strong></div>
+        <div class="metric"><span>Artículos en catálogo</span><strong id="productCount">8</strong></div>
+      </div>
+      <section id="salesView" class="workspace">
+        <div class="panel">
+          <h2>Selección de productos</h2><p class="sub">Buscá un artículo por nombre o código y agregalo a la venta.</p>
+          <input id="query" class="search" type="search" autocomplete="off" placeholder="Buscar producto o código de barras..." aria-label="Buscar productos">
+          <div class="filters" id="filters"></div><div class="products" id="products"></div>
+        </div>
+        <div class="panel">
+          <h2>Venta actual</h2><p class="sub">Resumen de artículos seleccionados</p>
+          <div id="cart" class="cart"></div>
+          <div class="total"><span>Total</span><strong id="cartTotal">$ 0</strong></div>
+          <label for="payment" class="muted">Medio de pago</label>
+          <select id="payment" class="select"><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option></select>
+          <button class="primary" id="checkout" disabled>Registrar venta</button>
+        </div>
+      </section>
+      <section id="inventoryView" class="panel hidden">
+        <h2>Productos e inventario</h2><p class="sub">Catálogo, precios y disponibilidad de artículos.</p>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Producto</th><th>Código</th><th>Categoría</th><th>Stock</th><th class="right">Precio</th></tr></thead><tbody id="inventoryRows"></tbody></table></div>
+      </section>
+      <section id="cashView" class="panel hidden">
+        <h2>Movimientos de caja</h2><p class="sub">Registro de operaciones del día.</p>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Movimiento</th><th>Artículos</th><th>Medio de pago</th><th class="right">Importe</th></tr></thead><tbody id="cashRows"></tbody></table></div>
+      </section>
+      <footer>Maxikiosco Vida · Sistema de ventas, caja e inventario</footer>
+    </main>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script>
+    const products=[
+      {id:1,code:"1001",name:"Pan",category:"Panadería",price:1500,stock:28,icon:"🥖"},
+      {id:2,code:"1002",name:"Bizcochos",category:"Panadería",price:2200,stock:18,icon:"🥨"},
+      {id:3,code:"1003",name:"Agua mineral",category:"Bebidas",price:1800,stock:35,icon:"💧"},
+      {id:4,code:"1004",name:"Jugo",category:"Bebidas",price:2300,stock:22,icon:"🧃"},
+      {id:5,code:"1005",name:"Chocolate",category:"Golosinas",price:2900,stock:12,icon:"🍫"},
+      {id:6,code:"1006",name:"Caramelos",category:"Golosinas",price:500,stock:65,icon:"🍬"},
+      {id:7,code:"1007",name:"Detergente",category:"Limpieza",price:3400,stock:8,icon:"🧴"},
+      {id:8,code:"1008",name:"Papel de cocina",category:"Limpieza",price:4200,stock:15,icon:"🧻"}
+    ];
+    const cart=new Map(),movements=[];
+    let category="Todos",toastTimeout;
+    const $=id=>document.getElementById(id);
+    const money=n=>new Intl.NumberFormat("es-AR",{style:"currency",currency:"ARS",maximumFractionDigits:0}).format(n);
+    function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(cls)node.className=cls;return node;}
+    function notice(msg){const n=$("toast");n.textContent=msg;n.classList.add("show");clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>n.classList.remove("show"),2700);}
+    function renderFilters(){
+      $("filters").replaceChildren();
+      for(const name of ["Todos",...new Set(products.map(p=>p.category))]){
+        const btn=el("button",name,name===category?"selected":"");
+        btn.addEventListener("click",()=>{category=name;renderFilters();renderProducts()});$("filters").append(btn);
+      }
+    }
+    function addProduct(p){
+      const previous=cart.get(p.id)||0;
+      if(previous>=p.stock){notice("No hay más unidades disponibles");return;}
+      cart.set(p.id,previous+1);renderCart();
+    }
+    function renderProducts(){
+      const term=$("query").value.trim().toLocaleLowerCase("es");
+      $("products").replaceChildren();
+      const matches=products.filter(p=>(category==="Todos"||p.category===category)&&(p.name+" "+p.code).toLocaleLowerCase("es").includes(term));
+      if(!matches.length){$("products").append(el("p","No se encontraron artículos.","empty"));return;}
+      for(const p of matches){
+        const btn=el("button",undefined,"product");btn.disabled=p.stock===0;
+        btn.append(el("span",p.icon,"emoji"),el("strong",p.name),el("small","Stock: "+p.stock),el("span",money(p.price),"price"));
+        btn.addEventListener("click",()=>addProduct(p));$("products").append(btn);
+      }
+    }
+    function renderCart(){
+      $("cart").replaceChildren();
+      if(!cart.size)$("cart").append(el("div","Agregá productos para iniciar la venta.","cart-empty"));
+      let total=0;
+      for(const [id,qty] of cart){
+        const p=products.find(p=>p.id===id);if(!p)continue;total+=p.price*qty;
+        const row=el("div",undefined,"cart-item"),description=el("div"),controls=el("div",undefined,"qty");
+        description.append(el("strong",p.name),el("small",money(p.price)));
+        const minus=el("button","−");minus.setAttribute("aria-label","Quitar "+p.name);
+        minus.addEventListener("click",()=>{qty<=1?cart.delete(id):cart.set(id,qty-1);renderCart();});
+        const plus=el("button","+");plus.setAttribute("aria-label","Agregar "+p.name);plus.disabled=qty>=p.stock;
+        plus.addEventListener("click",()=>addProduct(p));
+        controls.append(minus,el("span",String(qty)),plus);row.append(description,controls);$("cart").append(row);
+      }
+      $("cartTotal").textContent=money(total);$("checkout").disabled=cart.size===0;
+    }
+    function renderInventory(){
+      $("inventoryRows").replaceChildren();
+      for(const p of products){
+        const row=el("tr");
+        for(const value of [p.name,p.code,p.category]){
+          row.append(el("td",value));
+        }
+        const stockCell=el("td");stockCell.append(el("span",String(p.stock),p.stock<=10?"pill low":"pill"));row.append(stockCell);
+        row.append(el("td",money(p.price),"right"));$("inventoryRows").append(row);
+      }
+    }
+    function renderCash(){
+      $("cashRows").replaceChildren();
+      if(!movements.length){const row=el("tr"),td=el("td","Todavía no hay ventas registradas.","empty");td.colSpan=4;row.append(td);$("cashRows").append(row);return;}
+      for(const [index,m] of movements.entries()){
+        const row=el("tr");
+        [String(index+1).padStart(3,"0"),String(m.count),m.method,money(m.total)].forEach((v,i)=>row.append(el("td",v,i===3?"right":"")));
+        $("cashRows").append(row);
+      }
+    }
+    function checkout(){
+      let total=0,count=0;
+      for(const [id,quantity] of cart){
+        const p=products.find(p=>p.id===id);
+        if(!p||quantity>p.stock){notice("Revisá la disponibilidad antes de cobrar");return;}
+        total+=p.price*quantity;count+=quantity;
+      }
+      if(!count)return;
+      for(const [id,quantity] of cart){products.find(p=>p.id===id).stock-=quantity;}
+      movements.push({total,count,method:$("payment").value});cart.clear();
+      $("salesCount").textContent=String(movements.length);
+      $("salesTotal").textContent=money(movements.reduce((sum,m)=>sum+m.total,0));
+      renderCart();renderProducts();renderInventory();renderCash();
+      notice("Venta registrada: "+money(total));
+    }
+    document.querySelectorAll("[data-view]").forEach(btn=>btn.addEventListener("click",()=>{
+      document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b===btn));
+      const selected=btn.dataset.view;
+      $("salesView").classList.toggle("hidden",selected!=="ventas");
+      $("inventoryView").classList.toggle("hidden",selected!=="inventario");
+      $("cashView").classList.toggle("hidden",selected!=="caja");
+      $("pageTitle").textContent={ventas:"Punto de venta",inventario:"Productos e inventario",caja:"Movimientos de caja"}[selected];
+    }));
+    $("query").addEventListener("input",renderProducts);
+    $("checkout").addEventListener("click",checkout);
+    $("productCount").textContent=String(products.length);
+    renderFilters();renderProducts();renderCart();renderInventory();renderCash();
+  </script>
+</body>
+</html>
