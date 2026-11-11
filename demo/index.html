@@ -1,207 +1,224 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#142831">
-  <title>Maxikiosco Vida | Gestión comercial</title>
-  <style>
-    :root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#1c3038;background:#f4f7f8;font-size:14px}
-    *{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
-    .shell{display:grid;grid-template-columns:235px minmax(0,1fr);min-height:100vh}
-    aside{background:#152932;color:#d5e4e8;padding:28px 17px;display:flex;flex-direction:column;gap:32px}
-    .brand{display:flex;gap:12px;align-items:center;padding:4px 10px}.brand-icon{background:#f3c94b;color:#1f3138;border-radius:12px;padding:10px;font-weight:900;font-size:24px}
-    .brand strong{display:block;font-size:20px;letter-spacing:-.05em;color:white}.brand small{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#a3bec5}
-    .menu{display:grid;gap:7px}.menu button{border:0;border-radius:9px;padding:14px 15px;text-align:left;background:transparent;color:#c6d6da;font-weight:700}
-    .menu button.active{background:#f3c94b;color:#24353b}.menu button:hover:not(.active){background:#203c46}
-    .aside-bottom{margin-top:auto;color:#9fb5ba;font-size:12px;padding:10px;line-height:1.6}
-    main{width:100%;max-width:1580px;margin:0 auto;padding:30px clamp(18px,4vw,50px) 55px}
-    .heading{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:26px}
-    .eyebrow{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:#81979e}
-    h1{font-size:clamp(28px,3.7vw,38px);letter-spacing:-.045em;margin:6px 0}
-    .online{background:#e5f5e9;border-radius:99px;color:#2c7846;padding:9px 15px;font-size:12px;font-weight:750}
-    .summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:23px}
-    .metric,.panel{border:1px solid #dfe8eb;border-radius:15px;background:#fff;box-shadow:0 5px 22px #15303b08}
-    .metric{padding:20px 22px}.metric span{font-size:12px;font-weight:700;color:#7e969e}.metric strong{display:block;font-size:27px;letter-spacing:-.04em;margin-top:8px}
-    .workspace{display:grid;grid-template-columns:minmax(0,1fr) 335px;align-items:start;gap:20px}
-    .panel{padding:24px}.panel h2{font-size:20px;letter-spacing:-.03em;margin:0}.sub{font-size:12px;color:#879ba3;margin:8px 0 18px}
-    .search{display:block;width:100%;background:#f8fafb;border:1px solid #dae5e9;border-radius:9px;outline:0;padding:14px;color:#1c3038}
-    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 20px}
-    .filters button{border:1px solid #dee7e9;border-radius:8px;padding:9px 12px;background:white;color:#637b85;font-weight:650;font-size:12px}
-    .filters button.selected{background:#183842;color:white;border-color:#183842}
-    .products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-    .product{border:1px solid #e4ecee;border-radius:11px;background:#fff;min-height:147px;padding:15px;text-align:left;display:flex;flex-direction:column;gap:7px;transition:transform .15s,border-color .15s}
-    .product:hover{transform:translateY(-2px);border-color:#efc65b}.product .emoji{font-size:25px}.product strong{font-size:13px;line-height:1.35}
-    .product .price{font-size:16px;font-weight:850;color:#1d4149;margin-top:auto}.product small{color:#87a0a5;font-size:11px}
-    .cart{display:grid;gap:12px}.cart-item{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #edf1f2;padding-bottom:12px}
-    .cart-item strong{display:block;font-size:13px}.cart-item small{color:#80939b}
-    .qty{display:flex;gap:8px;align-items:center}.qty button{border:1px solid #dce5e8;background:#f9fafb;border-radius:6px;width:27px;height:27px}
-    .cart-empty{color:#8097a0;text-align:center;background:#f7fafb;border-radius:10px;padding:28px 12px}
-    .total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e7eef0;padding-top:17px;margin-top:14px;font-weight:700}
-    .total strong{font-size:24px}.select{width:100%;background:#fff;padding:12px;border:1px solid #dce6e9;border-radius:9px;margin:15px 0}
-    .primary{width:100%;padding:14px;background:#efc64a;border:0;border-radius:10px;color:#21333a;font-weight:850}
-    .primary:hover{background:#f7d36a}.muted{color:#81959c;font-size:12px}
-    .table-wrap{overflow:auto}.data-table{width:100%;border-collapse:collapse;min-width:460px}.data-table th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7f959c;border-bottom:1px solid #e7edef;padding:12px}
-    .data-table td{border-bottom:1px solid #edf1f2;padding:13px 12px}.right{text-align:right}.pill{padding:6px 10px;border-radius:99px;font-size:11px;font-weight:800;background:#e8f4ec;color:#347750}
-    .pill.low{background:#fff0e1;color:#ae6d2b}
-    .empty{color:#80939b;text-align:center;padding:38px 10px}
-    .hidden{display:none!important}
-    #toast{position:fixed;bottom:26px;right:26px;max-width:350px;background:#193840;color:#fff;padding:14px 18px;border-radius:10px;box-shadow:0 12px 36px #101f2940;opacity:0;transform:translateY(12px);transition:.2s;pointer-events:none}
-    #toast.show{opacity:1;transform:translateY(0)}
-    footer{font-size:11px;color:#81969e;margin-top:32px}
-    @media(max-width:1120px){.workspace{grid-template-columns:minmax(0,1fr)}.products{grid-template-columns:repeat(4,1fr)}}
-    @media(max-width:830px){.shell{grid-template-columns:1fr}aside{padding:14px;gap:12px}.brand{justify-content:center}.menu{display:flex;overflow:auto}.menu button{white-space:nowrap}.aside-bottom{display:none}main{padding:23px 15px}.products{grid-template-columns:repeat(3,1fr)}}
-    @media(max-width:560px){.summary{grid-template-columns:1fr}.products{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:17px}.heading{align-items:stretch}}
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maxikiosco Vi-Da · Gestión comercial</title>
+<meta name="theme-color" content="#ffd509">
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#293039;background:#f2f4f5;font-size:14px}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
+.wrap{max-width:1220px;margin:0 auto;padding:18px 20px 42px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;background:linear-gradient(100deg,#ffe759,#ffd200);border:1px solid #eccb29;border-radius:19px;padding:15px 20px;min-height:86px}
+.brand{display:flex;align-items:center;gap:12px}.store{width:55px;height:55px;display:grid;place-items:center;background:#fff7d2;border-radius:14px;font-size:34px;border:1px solid #e9d178}.brand small{display:block;color:#6a5814;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:900}.brand strong{display:block;font-weight:900;letter-spacing:-.055em;font-size:26px;line-height:1.1}.brand em{font-style:normal;color:#f14d41}.brand .date{font-size:11px;color:#796913;margin-top:4px}.btn{border:1px solid #d7dde2;background:white;color:#292f35;border-radius:9px;padding:11px 13px;font-weight:750;font-size:12px;min-height:38px}.btn:hover{border-color:#e0b529}.btn-dark{background:#272e35;color:white;border-color:#272e35}.btn-yellow{background:#ffd50a;border-color:#e7b900}.btn-cream{background:#fff3bd;border-color:#d9ae22}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 21px}.nav .btn{white-space:nowrap;padding:11px 16px}.nav .active{background:#ffd50a;border-color:#e6c22a;color:#181f25}
+h1{font-size:20px;letter-spacing:-.03em;margin:0 0 5px}.subtitle{font-size:12px;color:#84919d}.panel{background:white;border:1px solid #d9e0e5;border-radius:13px;box-shadow:0 8px 22px #24323b07;overflow:hidden}.inside{padding:17px}.info{background:#fff5cf;border:1px solid #f5e9b5;padding:13px 16px;border-radius:9px;font-size:12px;color:#4d4432;margin:12px 0}.help{background:#fffdf5;border:1px solid #e7ddbf;border-radius:10px;padding:12px 15px;font-weight:700;font-size:12px;margin-bottom:15px}
+.sales-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:13px;margin-bottom:13px}.sales-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-flex;align-items:center;border-radius:30px;background:#eef6eb;color:#60835a;padding:5px 9px;font-size:11px}
+.quick{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.quick button{background:#fff9e2;border:2px solid #e7b931;padding:11px 6px;border-radius:8px;min-height:62px;text-align:center;font-weight:800;font-size:15px}.quick small{display:block;font-size:10px;font-weight:600;margin-top:4px}
+.columns{display:grid;grid-template-columns:minmax(0,1.95fr) minmax(245px,.6fr);gap:15px}.col-left{min-width:0;display:grid;gap:12px;align-content:start}
+.scanner{display:grid;grid-template-columns:26px 1fr 80px auto;gap:10px;align-items:center;border-top:3px solid #f3c923;padding:18px;border-radius:12px;background:white}.scanner-icon{font-size:25px}.field-label{font-size:10px;letter-spacing:.12em;font-weight:900;display:block;margin-bottom:6px}.text-input{border:1px solid #cad5d6;border-radius:7px;background:white;padding:11px;min-width:0;outline-color:#dfb613;width:100%}.small-note{color:#559559;font-size:11px;margin-top:6px}
+.success{background:#eff6e8;border:1px solid #d4e5ca;border-radius:8px;padding:11px 14px;font-size:12px}
+.table-scroll{overflow:auto}.table{border-collapse:collapse;width:100%;font-size:12px}.table th{background:#fff9e3;color:#8b8c84;letter-spacing:.08em;text-transform:uppercase;text-align:left;font-size:10px;padding:11px;border-bottom:1px solid #e5e8ea}.table td{padding:11px;border-bottom:1px solid #edf0f1}.table td:last-child,.table th:last-child{text-align:right}
+.table strong{font-size:12px}.table small{display:block;font-size:10px;color:#8e9ba1;margin-top:3px}.table tr.weight{background:#fffaf0}.table input{max-width:64px;text-align:center;padding:6px}.table .remove{background:white;border:1px solid #dbe2e6;border-radius:7px;padding:5px 8px}
+.box-heading{background:#fff8dd;padding:12px 14px;font-weight:800}.category-list{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0 14px}
+.category-list button{border:1px solid #d9e1e4;border-radius:7px;background:white;padding:7px 10px;font-weight:800;font-size:11px}.category-list button.selected{background:#ffd816;border-color:#ffcc19}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.tile{border:1px solid #dce3e6;border-radius:9px;padding:10px;background:#fff;text-align:left;font-size:12px;min-height:85px}.tile small{display:block;color:#8b959c;margin:6px 0}.tile strong{display:block;margin-top:10px}
+.payment{align-self:start}.payment .total-head{background:#ffeb83;padding:19px 15px}.payment .total-head small{color:#73662e;font-size:10px;letter-spacing:.13em;font-weight:800}.payment .total-head strong{display:block;font-size:35px;line-height:1.2;letter-spacing:-.055em;margin:7px 0}.payment .total-head p{margin:0;color:#867d4c;font-size:11px}.methods{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:7px 0 10px}.methods button{background:white;border:1px solid #d9e0e5;border-radius:9px;min-height:44px;font-size:11px;font-weight:750}.methods button.selected{background:#fff1a9;border:2px solid #e7be00}.methods .wide{grid-column:1/-1}.cash-summary{background:#eff6e9;border:1px solid #d2e0cb;border-radius:8px;padding:12px;display:flex;justify-content:space-between;color:#35633d}.cash-summary strong{font-size:21px}.payment .primary{width:100%;background:#ffd20a;border:0;border-radius:10px;font-size:15px;font-weight:800;padding:14px;margin-top:17px}.payment .secondary{width:100%;margin-top:8px}
+.status{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 17px}.product-search{display:grid;grid-template-columns:1fr 145px auto;gap:8px}.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin:13px 0}.chip-row .btn{padding:8px}.data-table{width:100%;border-collapse:collapse;text-align:left}.data-table th{text-transform:uppercase;color:#88939c;font-size:10px;letter-spacing:.12em;border-bottom:1px solid #e2e7ea;padding:12px 9px}.data-table td{padding:14px 9px;border-bottom:1px solid #eef0f2;font-size:13px}.data-table small{display:block;font-size:11px;color:#9aa6ad;margin-top:2px}.data-table .right{text-align:right}.data-table td .btn{padding:7px;min-height:29px}
+.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:17px 0}.stat{background:#fff;border:1px solid #dce3e6;border-radius:11px;padding:16px}.stat.featured{background:#fff1aa}.stat small{font-size:10px;color:#778a97;font-weight:800;letter-spacing:.1em}.stat strong{font-size:23px;display:block;margin:11px 0}.stat p{font-size:11px;color:#829097;margin:0}
+.two{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(270px,.8fr);gap:17px}.modalbox{background:#fff;border:1px solid #cfd8db;border-radius:11px;overflow:hidden;margin-bottom:16px}.modalbox header{background:#fff7d9;padding:14px;font-weight:800;border-bottom:1px solid #ecddaa}.modalbox .inside{padding:17px}.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.mini-stats div{border:1px solid #dce4e6;border-radius:8px;padding:10px;font-size:11px}.mini-stats strong{font-size:16px;display:block;margin-top:6px}.prompt{text-align:center;padding:25px 12px}.prompt strong{font-size:20px;display:block;margin:16px 0}.badge-note{font-size:12px;color:#7b8991}
+.mobile-demo{max-width:420px;margin:auto;background:#f0f2f3;border:1px solid #dae1e3;border-radius:16px;padding:13px;box-shadow:0 9px 28px #11202414}.mobile-demo .top{min-height:74px;padding:10px}.mobile-demo .brand strong{font-size:20px}.mobile-demo .store{font-size:27px;width:46px;height:46px}.mobile-menu{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:12px 0}.mobile-menu button{padding:11px 5px}.mobile-row{display:flex;justify-content:space-between;border-bottom:1px solid #edf0f1;padding:10px 0;font-size:13px}.mobile-row small{display:block;color:#919ba1}.mobile-demo .report-grid{grid-template-columns:repeat(2,1fr)}.mobile-demo .stat strong{font-size:17px}
+.hidden{display:none!important}.empty{padding:28px;text-align:center;color:#8f9aa1}.toast{position:fixed;bottom:18px;right:18px;background:#273038;color:white;border-radius:9px;padding:13px 17px;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+@media(max-width:950px){.columns,.two{grid-template-columns:1fr}.quick{grid-template-columns:repeat(3,1fr)}.tiles{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.wrap{padding:12px}.top{padding:11px}.brand strong{font-size:21px}.store{width:47px;height:47px}.quick{grid-template-columns:repeat(2,1fr)}.scanner{grid-template-columns:20px 1fr 56px;gap:6px}.scanner button{grid-column:2/-1}.tiles{grid-template-columns:repeat(2,1fr)}.report-grid{grid-template-columns:repeat(2,1fr)}.product-search{grid-template-columns:1fr}.nav{gap:5px}.nav .btn{padding:10px}.mini-stats{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-  <div class="shell">
-    <aside>
-      <div class="brand"><span class="brand-icon">V</span><div><strong>VI-DA</strong><small>Gestión comercial</small></div></div>
-      <div class="menu" aria-label="Secciones">
-        <button class="active" data-view="ventas">▦ &nbsp; Punto de venta</button>
-        <button data-view="inventario">▤ &nbsp; Productos y stock</button>
-        <button data-view="caja">▤ &nbsp; Movimientos de caja</button>
-      </div>
-      <div class="aside-bottom">Maxikiosco Vida<br>Administración comercial</div>
-    </aside>
-    <main>
-      <div class="heading"><div><div class="eyebrow">Panel de administración</div><h1 id="pageTitle">Punto de venta</h1></div><span class="online">● Sistema activo</span></div>
-      <div class="summary">
-        <div class="metric"><span>Ventas registradas</span><strong id="salesCount">0</strong></div>
-        <div class="metric"><span>Total de ventas</span><strong id="salesTotal">$ 0</strong></div>
-        <div class="metric"><span>Artículos en catálogo</span><strong id="productCount">8</strong></div>
-      </div>
-      <section id="salesView" class="workspace">
-        <div class="panel">
-          <h2>Selección de productos</h2><p class="sub">Buscá un artículo por nombre o código y agregalo a la venta.</p>
-          <input id="query" class="search" type="search" autocomplete="off" placeholder="Buscar producto o código de barras..." aria-label="Buscar productos">
-          <div class="filters" id="filters"></div><div class="products" id="products"></div>
-        </div>
-        <div class="panel">
-          <h2>Venta actual</h2><p class="sub">Resumen de artículos seleccionados</p>
-          <div id="cart" class="cart"></div>
-          <div class="total"><span>Total</span><strong id="cartTotal">$ 0</strong></div>
-          <label for="payment" class="muted">Medio de pago</label>
-          <select id="payment" class="select"><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option></select>
-          <button class="primary" id="checkout" disabled>Registrar venta</button>
-        </div>
-      </section>
-      <section id="inventoryView" class="panel hidden">
-        <h2>Productos e inventario</h2><p class="sub">Catálogo, precios y disponibilidad de artículos.</p>
-        <div class="table-wrap"><table class="data-table"><thead><tr><th>Producto</th><th>Código</th><th>Categoría</th><th>Stock</th><th class="right">Precio</th></tr></thead><tbody id="inventoryRows"></tbody></table></div>
-      </section>
-      <section id="cashView" class="panel hidden">
-        <h2>Movimientos de caja</h2><p class="sub">Registro de operaciones del día.</p>
-        <div class="table-wrap"><table class="data-table"><thead><tr><th>Movimiento</th><th>Artículos</th><th>Medio de pago</th><th class="right">Importe</th></tr></thead><tbody id="cashRows"></tbody></table></div>
-      </section>
-      <footer>Maxikiosco Vida · Sistema de ventas, caja e inventario</footer>
-    </main>
+<div class="wrap">
+ <div class="top"><div class="brand"><div class="store">🏪</div><div><small>Ventas y productos</small><strong>Maxikiosco <em>Vi-Da</em></strong><div class="date" id="topDate"></div></div></div><button class="btn" id="exitButton">Salir</button></div>
+ <nav class="nav" id="mainNav" aria-label="Secciones">
+  <button class="btn active" data-view="vender">▯ &nbsp; Vender</button>
+  <button class="btn btn-cream" data-view="cierre">▣ &nbsp; Cerrar caja</button>
+  <button class="btn" data-view="productos">▦ &nbsp; Productos</button>
+  <button class="btn" data-view="cuentas">◎ &nbsp; Cuenta corriente</button>
+  <button class="btn" data-view="cajas">▣ &nbsp; Caja y turnos</button>
+  <button class="btn" data-view="proveedores">▤ &nbsp; Proveedores</button>
+  <button class="btn" data-view="reportes">≡ &nbsp; Reportes</button>
+  <button class="btn" data-view="config">⚙ &nbsp; Configuración</button>
+  <button class="btn" data-view="movil">▯ &nbsp; Vista móvil</button>
+ </nav>
+ <section id="view-vender" class="view">
+  <div class="sales-header"><h1>Caja · Venta</h1><div class="sales-actions"><span class="pill" id="cashBadge">Abierta</span><strong style="font-size:12px">Administrador</strong><button class="btn" id="openCash">Abrir caja</button><button class="btn btn-dark" data-view="cierre">Cerrar caja</button><button class="btn" data-view="cajas">Mi caja</button><button class="btn" id="focusSearch">Buscar producto <small>F2</small></button></div></div>
+  <div class="quick" id="quickButtons"></div>
+  <div class="info"><strong>1. Abrir caja</strong> · Indicar el cambio inicial → <strong>2. Vender</strong> → <strong>3. Cerrar caja</strong> · Contar el efectivo y aceptar los avisos.</div>
+  <details class="help"><summary>Cómo usar esta pestaña</summary><p>Escaneá el código o seleccioná un artículo. Elegí la forma de pago y confirmá la venta.</p></details>
+  <div class="columns">
+   <div class="col-left">
+    <div class="panel scanner"><div class="scanner-icon">▥</div><div><label class="field-label" for="scan">CÓDIGO DEL PRODUCTO</label><input class="text-input" id="scan" placeholder="Escaneá o escribí el código"><div class="small-note" id="lastScan">Ingresá un código o buscá un producto.</div></div><div><label class="field-label" for="scanQty">CANTIDAD</label><input class="text-input" id="scanQty" type="number" value="1" min="1" step="1"></div><button class="btn btn-dark" id="addScan">Agregar ↵</button></div>
+    <div class="success" id="lastItem">✓ &nbsp; Último producto agregado: Pan</div>
+    <div class="panel"><div class="box-heading">Detalle de la venta <span class="subtitle" style="float:right" id="cartCount"></span></div><div class="table-scroll"><table class="table"><thead><tr><th>Código</th><th>Producto</th><th>Cantidad</th><th>Precio unit.</th><th>Importe</th><th></th></tr></thead><tbody id="saleRows"></tbody></table></div></div>
+    <div class="subtitle">F2 Buscar por nombre &nbsp; · &nbsp; F9 Finalizar venta &nbsp; · &nbsp; Esc Volver al código</div>
+    <div class="panel inside"><details open><summary><strong>Productos por rubro</strong></summary><div class="category-list" id="salesCategories"></div><div class="tiles" id="saleTiles"></div></details></div>
+   </div>
+   <div class="panel payment"><div class="total-head"><small>TOTAL DE LA VENTA</small><strong id="cartTotal">$ 0</strong><p id="totalItems">0 productos</p></div><div class="inside"><strong style="font-size:12px">¿Cómo paga el cliente?</strong><div class="methods" id="payMethods"></div>
+    <label for="received" style="font-size:12px;font-weight:800">Efectivo recibido</label><input class="text-input" type="number" min="0" step="1" id="received" value="12000"><div class="cash-summary" style="margin-top:9px"><span>Vuelto</span><strong id="change">$ 0</strong></div>
+    <button class="primary" id="finalize">Finalizar venta &nbsp; F9</button><button class="btn secondary" id="clearSale">Nueva venta / vaciar</button><p class="subtitle">Se guarda la venta y se descuenta el stock al finalizar.</p></div></div>
   </div>
-  <div id="toast" role="status" aria-live="polite"></div>
-  <script>
-    const products=[
-      {id:1,code:"1001",name:"Pan",category:"Panadería",price:1500,stock:28,icon:"🥖"},
-      {id:2,code:"1002",name:"Bizcochos",category:"Panadería",price:2200,stock:18,icon:"🥨"},
-      {id:3,code:"1003",name:"Agua mineral",category:"Bebidas",price:1800,stock:35,icon:"💧"},
-      {id:4,code:"1004",name:"Jugo",category:"Bebidas",price:2300,stock:22,icon:"🧃"},
-      {id:5,code:"1005",name:"Chocolate",category:"Golosinas",price:2900,stock:12,icon:"🍫"},
-      {id:6,code:"1006",name:"Caramelos",category:"Golosinas",price:500,stock:65,icon:"🍬"},
-      {id:7,code:"1007",name:"Detergente",category:"Limpieza",price:3400,stock:8,icon:"🧴"},
-      {id:8,code:"1008",name:"Papel de cocina",category:"Limpieza",price:4200,stock:15,icon:"🧻"}
-    ];
-    const cart=new Map(),movements=[];
-    let category="Todos",toastTimeout;
-    const $=id=>document.getElementById(id);
-    const money=n=>new Intl.NumberFormat("es-AR",{style:"currency",currency:"ARS",maximumFractionDigits:0}).format(n);
-    function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(cls)node.className=cls;return node;}
-    function notice(msg){const n=$("toast");n.textContent=msg;n.classList.add("show");clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>n.classList.remove("show"),2700);}
-    function renderFilters(){
-      $("filters").replaceChildren();
-      for(const name of ["Todos",...new Set(products.map(p=>p.category))]){
-        const btn=el("button",name,name===category?"selected":"");
-        btn.addEventListener("click",()=>{category=name;renderFilters();renderProducts()});$("filters").append(btn);
-      }
-    }
-    function addProduct(p){
-      const previous=cart.get(p.id)||0;
-      if(previous>=p.stock){notice("No hay más unidades disponibles");return;}
-      cart.set(p.id,previous+1);renderCart();
-    }
-    function renderProducts(){
-      const term=$("query").value.trim().toLocaleLowerCase("es");
-      $("products").replaceChildren();
-      const matches=products.filter(p=>(category==="Todos"||p.category===category)&&(p.name+" "+p.code).toLocaleLowerCase("es").includes(term));
-      if(!matches.length){$("products").append(el("p","No se encontraron artículos.","empty"));return;}
-      for(const p of matches){
-        const btn=el("button",undefined,"product");btn.disabled=p.stock===0;
-        btn.append(el("span",p.icon,"emoji"),el("strong",p.name),el("small","Stock: "+p.stock),el("span",money(p.price),"price"));
-        btn.addEventListener("click",()=>addProduct(p));$("products").append(btn);
-      }
-    }
-    function renderCart(){
-      $("cart").replaceChildren();
-      if(!cart.size)$("cart").append(el("div","Agregá productos para iniciar la venta.","cart-empty"));
-      let total=0;
-      for(const [id,qty] of cart){
-        const p=products.find(p=>p.id===id);if(!p)continue;total+=p.price*qty;
-        const row=el("div",undefined,"cart-item"),description=el("div"),controls=el("div",undefined,"qty");
-        description.append(el("strong",p.name),el("small",money(p.price)));
-        const minus=el("button","−");minus.setAttribute("aria-label","Quitar "+p.name);
-        minus.addEventListener("click",()=>{qty<=1?cart.delete(id):cart.set(id,qty-1);renderCart();});
-        const plus=el("button","+");plus.setAttribute("aria-label","Agregar "+p.name);plus.disabled=qty>=p.stock;
-        plus.addEventListener("click",()=>addProduct(p));
-        controls.append(minus,el("span",String(qty)),plus);row.append(description,controls);$("cart").append(row);
-      }
-      $("cartTotal").textContent=money(total);$("checkout").disabled=cart.size===0;
-    }
-    function renderInventory(){
-      $("inventoryRows").replaceChildren();
-      for(const p of products){
-        const row=el("tr");
-        for(const value of [p.name,p.code,p.category]){
-          row.append(el("td",value));
-        }
-        const stockCell=el("td");stockCell.append(el("span",String(p.stock),p.stock<=10?"pill low":"pill"));row.append(stockCell);
-        row.append(el("td",money(p.price),"right"));$("inventoryRows").append(row);
-      }
-    }
-    function renderCash(){
-      $("cashRows").replaceChildren();
-      if(!movements.length){const row=el("tr"),td=el("td","Todavía no hay ventas registradas.","empty");td.colSpan=4;row.append(td);$("cashRows").append(row);return;}
-      for(const [index,m] of movements.entries()){
-        const row=el("tr");
-        [String(index+1).padStart(3,"0"),String(m.count),m.method,money(m.total)].forEach((v,i)=>row.append(el("td",v,i===3?"right":"")));
-        $("cashRows").append(row);
-      }
-    }
-    function checkout(){
-      let total=0,count=0;
-      for(const [id,quantity] of cart){
-        const p=products.find(p=>p.id===id);
-        if(!p||quantity>p.stock){notice("Revisá la disponibilidad antes de cobrar");return;}
-        total+=p.price*quantity;count+=quantity;
-      }
-      if(!count)return;
-      for(const [id,quantity] of cart){products.find(p=>p.id===id).stock-=quantity;}
-      movements.push({total,count,method:$("payment").value});cart.clear();
-      $("salesCount").textContent=String(movements.length);
-      $("salesTotal").textContent=money(movements.reduce((sum,m)=>sum+m.total,0));
-      renderCart();renderProducts();renderInventory();renderCash();
-      notice("Venta registrada: "+money(total));
-    }
-    document.querySelectorAll("[data-view]").forEach(btn=>btn.addEventListener("click",()=>{
-      document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b===btn));
-      const selected=btn.dataset.view;
-      $("salesView").classList.toggle("hidden",selected!=="ventas");
-      $("inventoryView").classList.toggle("hidden",selected!=="inventario");
-      $("cashView").classList.toggle("hidden",selected!=="caja");
-      $("pageTitle").textContent={ventas:"Punto de venta",inventario:"Productos e inventario",caja:"Movimientos de caja"}[selected];
-    }));
-    $("query").addEventListener("input",renderProducts);
-    $("checkout").addEventListener("click",checkout);
-    $("productCount").textContent=String(products.length);
-    renderFilters();renderProducts();renderCart();renderInventory();renderCash();
-  </script>
+ </section>
+ <section id="view-productos" class="view hidden">
+  <div class="status"><div><h1>Productos</h1><div class="subtitle" id="catalogCount">Catálogo de artículos</div></div><span class="pill">● Guardado en la computadora</span></div>
+  <details class="help"><summary>Cómo usar esta pestaña</summary><p>Consultá productos, modificá precios y cantidades o agregá nuevos artículos al catálogo.</p></details>
+  <div class="panel inside">
+   <div class="status"><h1>Tu catálogo</h1><div class="sales-actions"><button class="btn" id="newWeight">Agregar por peso (kg / gramos)</button><button class="btn btn-yellow" id="newProduct">Agregar producto</button></div></div>
+   <div class="toolbar"><button class="btn" id="stockFilter">Stock y vencimientos</button><button class="btn" id="labels">Etiquetas de precios</button><button class="btn" id="priceUpdate">Actualizar precios</button><button class="btn" id="importCsv">Importar CSV / Excel</button><button class="btn" id="downloadCatalog">Descargar catálogo</button></div>
+   <div class="product-search"><input class="text-input" id="productSearch" placeholder="Nombre o código de barras..."><select class="text-input" id="productCategory"><option value="Todas">Todas</option></select><button class="btn" id="resetProductFilters">↻</button></div>
+   <div class="chip-row" id="productChips"><button class="btn btn-yellow" data-filter="Habilitados">Habilitados</button><button class="btn" data-filter="Dormidos">Dormidos</button><button class="btn" data-filter="Discontinuados">Discontinuados</button><button class="btn" data-filter="Todos">Todos</button></div>
+   <div class="table-scroll"><table class="data-table"><thead><tr><th>PRODUCTO / CÓDIGO</th><th>CATEGORÍA</th><th>PRECIO</th><th>STOCK</th><th class="right"></th></tr></thead><tbody id="catalogRows"></tbody></table></div>
+   <p class="subtitle" id="catalogFooter"></p>
+  </div>
+ </section>
+ <section id="view-reportes" class="view hidden">
+  <h1>Reportes</h1><p class="subtitle">Consultá ventas y cobros por período.</p>
+  <div class="two"><div>
+   <div class="panel inside">
+    <div class="toolbar"><label>Desde <input class="text-input" type="date" id="fromDate"></label><label>Hasta <input class="text-input" type="date" id="toDate"></label><button class="btn btn-yellow" id="consultReport">Consultar</button></div>
+    <div class="toolbar"><button class="btn" data-period="hoy">Hoy</button><button class="btn" data-period="semana">Esta semana</button><button class="btn" data-period="mes">Este mes</button><button class="btn" data-period="anio">Este año</button></div>
+    <div class="report-grid"><div class="stat featured"><small>VENTAS</small><strong id="reportTotal"></strong><p id="reportQuantity"></p></div><div class="stat"><small>VENTAS FIADAS</small><strong id="creditTotal"></strong><p>Cuenta corriente</p></div><div class="stat"><small>COBROS DE CUENTAS</small><strong>$ 0</strong><p>Movimientos de cuenta</p></div><div class="stat"><small>TOTAL RECIBIDO</small><strong id="paidTotal"></strong><p>Ventas cobradas</p></div></div>
+    <div class="status"><h1>Ventas del período</h1><button class="btn" id="downloadSales">Descargar ventas</button></div>
+    <div class="table-scroll"><table class="data-table"><thead><tr><th>VENTA</th><th>FECHA</th><th>PAGO / CLIENTE</th><th>ESTADO</th><th class="right">TOTAL</th></tr></thead><tbody id="reportRows"></tbody></table></div>
+   </div>
+  </div><div>
+   <div class="modalbox"><header>Cerrar mi caja</header><div class="inside">
+     <div class="mini-stats"><div>Efectivo esperado<strong id="expectedCash"></strong></div><div>Total vendido<strong id="shiftTotal"></strong></div><div>Ventas fiadas<strong id="shiftCredit"></strong></div></div>
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:13px 0"><label>¿Cuánto efectivo contaste?<input class="text-input" id="cashCounted" type="number" min="0" value="3000"></label><label>¿Cuánto cambio dejás?<input class="text-input" id="changeLeft" type="number" min="0" value="2000"></label></div><div class="info" id="cashDifference">Diferencia: $ 0</div>
+     <button class="btn btn-yellow" style="width:100%" id="startClose">Continuar con el cierre</button></div></div>
+   <div class="modalbox"><header>Avisos obligatorios</header><div class="inside prompt"><div class="subtitle" id="noticeStep">ADMINISTRADOR</div><strong id="noticeText">¿Pusiste la mercadería que te toca reponer?</strong><p class="subtitle">Tu confirmación queda registrada en esta sesión.</p><button class="btn btn-yellow" id="acceptNotice">Aceptar y continuar</button></div></div>
+  </div></div>
+ </section>
+ <section id="view-cierre" class="view hidden"><h1>Cerrar caja</h1><p class="subtitle">Rendición de efectivo, revisión de movimientos y confirmación de cierre.</p><div class="panel inside"><p>El cierre de caja se gestiona con las herramientas de reportes y los avisos de la jornada.</p><button class="btn btn-yellow" data-view="reportes">Abrir cierre y reportes</button></div></section>
+ <section id="view-cuentas" class="view hidden"><h1>Cuenta corriente</h1><p class="subtitle">Seguimiento de saldos y operaciones de clientes.</p><div class="panel inside"><strong>Movimientos a cuenta</strong><p id="creditInfo"></p><div class="subtitle">Cada venta a cuenta queda registrada en el historial.</div></div></section>
+ <section id="view-cajas" class="view hidden"><h1>Caja y turnos</h1><p class="subtitle">Resumen de movimientos y estado de la caja.</p><div class="panel inside"><strong id="cashState">Caja abierta</strong><p id="cashSales"></p><div class="sales-actions"><button class="btn btn-yellow" data-view="vender">Ir a ventas</button><button class="btn btn-dark" data-view="reportes">Ver reportes</button></div></div></section>
+ <section id="view-proveedores" class="view hidden"><h1>Proveedores</h1><p class="subtitle">Administración de proveedores y movimientos de mercadería.</p><div class="panel inside"><div class="status"><strong>Listado de proveedores</strong><button class="btn btn-yellow" id="addSupplier">Agregar proveedor</button></div><div id="supplierList" class="subtitle">Distribuidora de alimentos · Proveedor de bebidas · Panadería local</div></div></section>
+ <section id="view-config" class="view hidden"><h1>Configuración</h1><p class="subtitle">Parámetros generales de caja y presentación.</p><div class="panel inside"><label><input type="checkbox" id="lowStockToggle" checked> Mostrar avisos de stock bajo</label><p class="subtitle">Preferencias de la interfaz de venta y catálogo.</p></div></section>
+ <section id="view-movil" class="view hidden"><h1>Gestión desde el celular</h1><p class="subtitle">Productos, precios, stock y consultas de ventas.</p>
+   <div class="mobile-demo">
+    <div class="top"><div class="brand"><span class="store">🏪</span><div><small>Gestión de Dani</small><strong>Maxikiosco <em>Vi-Da</em></strong></div></div></div>
+    <div class="info"><strong>Conectado con la computadora</strong><p style="margin:5px 0">Sin cambios pendientes.</p><button class="btn" id="syncMobile">Sincronizar ahora</button></div>
+    <div class="mobile-menu"><button class="btn btn-yellow" data-mobile="productos">Productos</button><button class="btn" data-mobile="cuentas">Cuentas</button><button class="btn" data-mobile="ventas">Ventas</button><button class="btn" data-mobile="cajas">Cajas</button><button class="btn" data-mobile="proveedores">Proveedores</button></div>
+    <div class="panel inside"><div id="mobileContent"></div></div>
+   </div>
+ </section>
+ <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+<script>
+const today='2026-11-06';
+const products=[
+ {code:'1006',name:'Aceite Cocinero 900 ml',category:'Almacén',price:3200,stock:77},
+ {code:'1002',name:'Agua mineral 1,5 L',category:'Bebidas',price:1600,stock:79},
+ {code:'1009',name:'Alfajor Fantoche triple',category:'Dulces',price:1000,stock:54},
+ {code:'1005',name:'Arroz Gallo 1 kg',category:'Almacén',price:2100,stock:77},
+ {code:'1004',name:'Azúcar Ledesma 1 kg',category:'Almacén',price:1500,stock:74},
+ {code:'2002',name:'Bizcocho',category:'Panadería',price:6800,stock:17.25,weight:true},
+ {code:'1001',name:'Coca-Cola 2,25 L',category:'Bebidas',price:3700,stock:62},
+ {code:'1012',name:'Detergente Ala 750 ml',category:'Limpieza',price:1800,stock:80},
+ {code:'1010',name:'Galletitas Oreo 118 g',category:'Galletitas',price:1600,stock:77},
+ {code:'1011',name:'Harina 000 1 kg',category:'Almacén',price:1200,stock:58},
+ {code:'1013',name:'Leche entera 1 L',category:'Lácteos',price:1800,stock:45},
+ {code:'2001',name:'Pan',category:'Panadería',price:4200,stock:22,weight:true},
+ {code:'2003',name:'Pan con grasa',category:'Panadería',price:6800,stock:15,weight:true},
+ {code:'1015',name:'Papas fritas',category:'Snacks',price:1800,stock:34},
+ {code:'2004',name:'Masitas',category:'Panadería',price:9500,stock:12,weight:true},
+ {code:'1017',name:'Sal fina',category:'Almacén',price:850,stock:42},
+ {code:'1018',name:'Yerba Playadito 500 g',category:'Almacén',price:3400,stock:26},
+ {code:'1019',name:'Golosinas surtidas',category:'Dulces',price:500,stock:100}
+];
+let cart=[{code:'1001',qty:1},{code:'1018',qty:1},{code:'1009',qty:2},{code:'2001',qty:.25}];
+const sales=[{id:30,date:today,total:5800,method:'Cuenta corriente',count:2},{id:31,date:today,total:1000,method:'Efectivo',count:1},{id:32,date:today,total:1600,method:'Tarjeta',count:1},{id:33,date:today,total:1000,method:'Efectivo',count:1}];
+let category='Todos',payment='Efectivo',filterProducts='Habilitados',mobileTab='productos',notice=0,boxOpen=true,stockOnly=false;
+const $=id=>document.getElementById(id),fmt=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS'}).format(n);
+function e(tag,txt,cl){const n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;if(cl)n.className=cl;return n;}
+function notify(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200);}
+function prod(code){return products.find(p=>p.code===code);}
+function lineTotal(it){const p=prod(it.code);return p?p.price*it.qty:0;}
+function sumCart(){return cart.reduce((s,i)=>s+lineTotal(i),0);}
+function add(code,qty=1){const p=prod(code);if(!p)return notify('Producto no encontrado');const old=cart.find(i=>i.code===code);if((old?old.qty:0)+qty>p.stock)return notify('Sin stock suficiente');old?old.qty+=qty:cart.push({code,qty});$('lastItem').textContent='✓  Último producto agregado: '+p.name;renderCart();}
+function renderCart(){const body=$('saleRows');body.replaceChildren();let units=0;
+ for(const it of cart){const p=prod(it.code);if(!p)continue;units+=it.qty;const tr=e('tr');if(p.weight)tr.className='weight';tr.append(e('td',p.code));
+ const name=e('td');name.append(e('strong',p.name),e('small',p.weight?'Por kilogramo':'Por unidad'));tr.append(name);
+ const q=e('td'),input=e('input');input.className='text-input';input.type='number';input.step=p.weight?'0.05':'1';input.min=p.weight?'.05':'1';input.value=p.weight?String(Math.round(it.qty*1000)):String(it.qty);
+ if(p.weight){const label=e('span',' g');q.append(input,label);}else q.append(input);
+ input.addEventListener('change',()=>{let v=Number(input.value);if(p.weight)v=v/1000;if(!Number.isFinite(v)||v<=0||v>p.stock){notify('Cantidad no válida');renderCart();return;}it.qty=v;renderCart();});tr.append(q);
+ tr.append(e('td',fmt(p.price)),e('td',fmt(lineTotal(it))));
+ const del=e('td'),btn=e('button','×','remove');btn.addEventListener('click',()=>{cart=cart.filter(x=>x!==it);renderCart();});del.append(btn);tr.append(del);body.append(tr);
+ }
+ $('cartCount').textContent=cart.length+' productos';$('cartTotal').textContent=fmt(sumCart());$('totalItems').textContent=cart.length+' productos · '+units.toLocaleString('es-AR')+' artículos';renderChange();
+}
+function renderChange(){const received=Number($('received').value)||0;$('change').textContent=fmt(payment==='Efectivo'?Math.max(0,received-sumCart()):0);}
+function renderPayments(){$('payMethods').replaceChildren();for(const name of ['Efectivo','Transferencia','Tarjeta','Pago combinado','Cuenta corriente']){const b=e('button',name,name===payment?'selected':'');if(name==='Cuenta corriente')b.classList.add('wide');b.addEventListener('click',()=>{payment=name;renderPayments();});$('payMethods').append(b);}renderChange();}
+function renderSalesCategories(){$('salesCategories').replaceChildren();for(const name of ['Todos',...new Set(products.map(p=>p.category))]){const b=e('button',name,name===category?'selected':'');b.addEventListener('click',()=>{category=name;renderSalesCategories();renderTiles();});$('salesCategories').append(b);}}
+function renderTiles(){$('saleTiles').replaceChildren();for(const p of products.filter(p=>category==='Todos'||p.category===category).slice(0,15)){const b=e('button',undefined,'tile');b.append(e('small',p.code),e('strong',p.name),e('strong',fmt(p.price)));b.addEventListener('click',()=>p.weight?askWeight(p):add(p.code));$('saleTiles').append(b);}}
+function askWeight(p){const raw=prompt('Cantidad de '+p.name+' en gramos:','250');if(raw===null)return;const grams=Number(raw.replace(',','.'));if(!(grams>0))return notify('Cantidad no válida');add(p.code,grams/1000);}
+function renderQuick(){const names=['Golosinas','Pan','Bizcocho','Pan con grasa','Masitas'];$('quickButtons').replaceChildren();for(const name of names){const b=e('button');b.append(e('span',name),e('small',name==='Golosinas'?'Ingresar importe':'Gramos → calcular precio'));b.addEventListener('click',()=>{if(name==='Golosinas'){const v=Number(prompt('Importe para golosinas:','500'));if(v>0){const p=prod('1019');p.price=v;add(p.code);}}else{const p=products.find(p=>p.name===name);if(p)askWeight(p);}});$('quickButtons').append(b);}}
+function renderProducts(){const term=$('productSearch').value.toLocaleLowerCase('es'),sel=$('productCategory').value;const body=$('catalogRows');body.replaceChildren();
+ let list=products.filter(p=>(sel==='Todas'||p.category===sel)&&(p.name+' '+p.code).toLocaleLowerCase('es').includes(term)&&(!stockOnly||p.stock<20));
+ for(const p of list){const tr=e('tr'),a=e('td');a.append(e('strong',p.name),e('small',p.code));tr.append(a,e('td',p.category),e('td',fmt(p.price)),e('td',p.stock.toLocaleString('es-AR')+(p.weight?' kg':' un')));
+ const actions=e('td',undefined,'right'),edit=e('button','Editar','btn'),stock=e('button','Stock','btn');
+ edit.addEventListener('click',()=>{const v=prompt('Nuevo precio de '+p.name+':',String(p.price));if(v===null)return;const n=Number(v.replace(',','.'));if(n>0){p.price=n;renderAll();}});
+ stock.addEventListener('click',()=>{const v=prompt('Nuevo stock de '+p.name+':',String(p.stock));if(v===null)return;const n=Number(v.replace(',','.'));if(n>=0){p.stock=n;renderAll();}});
+ actions.append(edit,' ',stock);tr.append(actions);body.append(tr);
+ }
+ $('catalogCount').textContent=products.length+' artículos en el catálogo · '+products.length+' habilitados · Buscá por nombre, código o rubro';
+ $('catalogFooter').textContent=list.length+' artículos · Página 1 de 1';
+}
+function initProductCategories(){for(const name of [...new Set(products.map(p=>p.category))]){const option=e('option',name);option.value=name;$('productCategory').append(option);}}
+function renderReports(){const total=sales.reduce((s,v)=>s+v.total,0),credit=sales.filter(v=>v.method==='Cuenta corriente').reduce((s,v)=>s+v.total,0),cash=sales.filter(v=>v.method==='Efectivo').reduce((s,v)=>s+v.total,0);
+ $('reportTotal').textContent=fmt(total);$('reportQuantity').textContent=sales.length+' ventas vigentes';$('creditTotal').textContent=fmt(credit);$('paidTotal').textContent=fmt(total-credit);
+ $('expectedCash').textContent=fmt(cash);$('shiftTotal').textContent=fmt(total);$('shiftCredit').textContent=fmt(credit);$('creditInfo').textContent='Ventas a cuenta registradas: '+fmt(credit);$('cashSales').textContent=sales.length+' ventas · '+fmt(total);$('cashState').textContent=boxOpen?'Caja abierta':'Caja cerrada';
+ $('reportRows').replaceChildren();for(const s of [...sales].reverse()){const row=e('tr');row.append(e('td','#'+s.id),e('td',s.date),e('td',s.method),e('td','Vigente'),e('td',fmt(s.total),'right'));$('reportRows').append(row);}
+ $('cashDifference').textContent='Diferencia: '+fmt((Number($('cashCounted').value)||0)-cash);renderMobile();
+}
+const notices=['¿Pusiste la mercadería que te toca reponer?','¿Revisaste los productos y el stock?','¿Registraste todos los cobros del turno?','¿Confirmás el cierre de caja?'];
+function renderNotice(){$('noticeStep').textContent='CIERRE · AVISO '+(notice+1)+' DE 4';$('noticeText').textContent=notices[notice];$('acceptNotice').textContent=notice===3?'Confirmar cierre':'Aceptar y continuar';}
+function renderMobile(){const area=$('mobileContent');area.replaceChildren();
+ if(mobileTab==='productos'){area.append(e('h2','Productos'));const search=e('input');search.placeholder='Nombre o código de barras...';search.className='text-input';area.append(search);const list=e('div');area.append(list);
+ function draw(){list.replaceChildren();for(const p of products.filter(x=>(x.name+' '+x.code).toLocaleLowerCase('es').includes(search.value.toLocaleLowerCase('es'))).slice(0,7)){const row=e('div',undefined,'mobile-row'),name=e('div');name.append(e('strong',p.name),e('small',p.code+' · Stock: '+p.stock));row.append(name,e('strong',fmt(p.price)));list.append(row);}}search.addEventListener('input',draw);draw();
+ }else if(mobileTab==='ventas'){area.append(e('h2','Ventas de hoy'));const stat=e('div',undefined,'stat featured');stat.append(e('small','TOTAL VENDIDO'),e('strong',fmt(sales.reduce((s,v)=>s+v.total,0))),e('small',sales.length+' ventas'));area.append(stat);for(const s of [...sales].reverse())area.append(e('div','Venta #'+s.id+' · '+s.method+' · '+fmt(s.total),'mobile-row'));
+ }else if(mobileTab==='cajas'){area.append(e('h2','Cajas'));area.append(e('p',boxOpen?'Caja abierta':'Caja cerrada'));area.append(e('div','Total de ventas: '+fmt(sales.reduce((s,v)=>s+v.total,0)),'stat'));
+ }else if(mobileTab==='cuentas'){area.append(e('h2','Cuentas'));area.append(e('p','Saldo registrado: '+fmt(sales.filter(s=>s.method==='Cuenta corriente').reduce((v,s)=>v+s.total,0))));}
+ else {area.append(e('h2','Proveedores'));area.append(e('p','Catálogo de proveedores y movimientos.'));}
+}
+function view(name){document.querySelectorAll('.view').forEach(n=>n.classList.toggle('hidden',n.id!=='view-'+name));document.querySelectorAll('#mainNav [data-view]').forEach(n=>n.classList.toggle('active',n.dataset.view===name));if(name==='productos')renderProducts();if(name==='reportes')renderReports();if(name==='movil')renderMobile();window.scrollTo(0,0);}
+function renderAll(){renderCart();renderTiles();renderProducts();renderReports();}
+document.querySelectorAll('[data-view]').forEach(n=>n.addEventListener('click',()=>view(n.dataset.view)));
+$('topDate').textContent='Hoy · 06/11/2026';$('fromDate').value=today;$('toDate').value=today;
+$('scan').addEventListener('keydown',e=>{if(e.key==='Enter')$('addScan').click();});
+$('addScan').addEventListener('click',()=>{const code=$('scan').value.trim(),p=products.find(p=>p.code===code||p.name.toLocaleLowerCase('es')===code.toLocaleLowerCase('es'));if(!p)return notify('Producto no encontrado');p.weight?askWeight(p):add(p.code,Math.max(1,Math.floor(Number($('scanQty').value)||1)));$('scan').value='';$('scan').focus();});
+$('focusSearch').addEventListener('click',()=>$('scan').focus());
+$('received').addEventListener('input',renderChange);
+$('finalize').addEventListener('click',()=>{if(!cart.length)return notify('No hay productos en la venta');if(!boxOpen)return notify('La caja está cerrada');const total=sumCart();if(payment==='Efectivo'&&Number($('received').value)<total)return notify('El efectivo recibido es insuficiente');
+ for(const it of cart){const p=prod(it.code);if(p.stock<it.qty)return notify('Revisá el stock disponible');}for(const it of cart)prod(it.code).stock-=it.qty;
+ sales.push({id:Math.max(...sales.map(x=>x.id))+1,date:today,total,method:payment,count:cart.length});cart=[];notify('Venta registrada: '+fmt(total));renderAll();});
+$('clearSale').addEventListener('click',()=>{cart=[];renderCart();notify('Venta nueva');});
+document.querySelectorAll('#payMethods button').forEach(n=>n.addEventListener('click',()=>{}));
+$('productSearch').addEventListener('input',renderProducts);$('productCategory').addEventListener('change',renderProducts);
+$('productChips').addEventListener('click',ev=>{const btn=ev.target.closest('[data-filter]');if(!btn)return;filterProducts=btn.dataset.filter;document.querySelectorAll('#productChips [data-filter]').forEach(b=>b.classList.toggle('btn-yellow',b===btn));renderProducts();});
+$('resetProductFilters').addEventListener('click',()=>{$('productSearch').value='';$('productCategory').value='Todas';stockOnly=false;renderProducts();});
+$('stockFilter').addEventListener('click',()=>{stockOnly=!stockOnly;renderProducts();notify(stockOnly?'Mostrando artículos con stock bajo':'Mostrando catálogo');});
+$('newProduct').addEventListener('click',()=>{const name=prompt('Nombre del nuevo producto:');if(!name||!name.trim())return;const price=Number(prompt('Precio:', '1500'));if(!(price>0))return;const code=String(Math.max(...products.map(x=>Number(x.code)))+1);products.push({code,name:name.trim(),category:'Almacén',price,stock:0});renderAll();notify('Producto agregado');});
+$('newWeight').addEventListener('click',()=>{const name=prompt('Producto por peso:');if(!name||!name.trim())return;const price=Number(prompt('Precio por kilogramo:', '4200'));if(!(price>0))return;const code=String(Math.max(...products.map(x=>Number(x.code)))+1);products.push({code,name:name.trim(),category:'Panadería',price,stock:0,weight:true});renderAll();notify('Producto por peso agregado');});
+$('labels').addEventListener('click',()=>notify('Etiquetas listas para impresión'));$('priceUpdate').addEventListener('click',()=>notify('Precios actualizados'));
+$('importCsv').addEventListener('click',()=>notify('Importación de catálogo disponible en la aplicación comercial'));
+function downloadCSV(rows,name){const text=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);}
+$('downloadCatalog').addEventListener('click',()=>downloadCSV([['Código','Producto','Categoría','Precio','Stock'],...products.map(p=>[p.code,p.name,p.category,p.price,p.stock])],'catalogo_vida.csv'));
+$('downloadSales').addEventListener('click',()=>downloadCSV([['Venta','Fecha','Medio','Total'],...sales.map(s=>[s.id,s.date,s.method,s.total])],'ventas_vida.csv'));
+document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>notify('Mostrando ventas registradas')));$('consultReport').addEventListener('click',renderReports);
+$('cashCounted').addEventListener('input',renderReports);$('startClose').addEventListener('click',()=>{notice=0;renderNotice();notify('Revisá los avisos de cierre');});
+$('acceptNotice').addEventListener('click',()=>{if(notice<3){notice++;renderNotice();}else{boxOpen=false;notice=0;renderNotice();$('cashBadge').textContent='Cerrada';notify('Cierre de caja confirmado');renderReports();}});
+$('openCash').addEventListener('click',()=>{boxOpen=true;$('cashBadge').textContent='Abierta';notify('Caja abierta');});$('exitButton').addEventListener('click',()=>notify('Maxikiosco Vi-Da'));
+$('addSupplier').addEventListener('click',()=>{const name=prompt('Nombre del proveedor:');if(name){$('supplierList').textContent+=' · '+name;notify('Proveedor agregado');}});
+document.querySelectorAll('[data-mobile]').forEach(b=>b.addEventListener('click',()=>{mobileTab=b.dataset.mobile;document.querySelectorAll('[data-mobile]').forEach(x=>x.classList.toggle('btn-yellow',x===b));renderMobile();}));
+$('syncMobile').addEventListener('click',()=>notify('Información sincronizada'));
+document.addEventListener('keydown',ev=>{if(ev.key==='F2'){ev.preventDefault();view('vender');$('scan').focus();}if(ev.key==='F9'){ev.preventDefault();if(!$('view-vender').classList.contains('hidden'))$('finalize').click();}if(ev.key==='Escape')$('scan').focus();});
+initProductCategories();renderQuick();renderSalesCategories();renderTiles();renderPayments();renderCart();renderProducts();renderReports();renderMobile();renderNotice();
+</script>
 </body>
 </html>
