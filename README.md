@@ -25,7 +25,14 @@ Sistema comercial para punto de venta, productos, caja, cuentas corrientes, prov
 
 ## Pantallas originales
 
-La [galería del sistema](demo/index.html) muestra cuatro capturas de la versión **1.5.2**: venta, productos, cierre de caja con reportes y administración móvil.
+Las pantallas originales de la versión **1.5.2** están disponibles en los siguientes accesos:
+
+- [**Ventas y cobros**](demo/index.html#ventas)
+- [**Productos y stock**](demo/index.html#productos)
+- [**Cierre de caja y reportes**](demo/index.html#reportes)
+- [**Administración desde el celular**](demo/index.html#celular)
+
+En las vistas de escritorio, las secciones se recorren desde los botones integrados en la propia interfaz.
 
 Se conservaron el diseño, la identidad amarilla Vi-Da, los botones y la distribución de las pantallas originales. También están disponibles los [estilos CSS del desarrollo](demo/estilos-originales.css).
 
